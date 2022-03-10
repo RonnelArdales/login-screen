@@ -51,7 +51,7 @@ password:"12345",
               <Image
                     source={{ uri: 'https://www.nicepng.com/png/full/138-1388174_login-account-icon.png'}}
                     style={{
-                    height: '92%',
+                    height: '91%',
                     width: '100%',
                     resizeMode: 'center',
                     
