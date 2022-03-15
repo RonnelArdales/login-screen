@@ -20,11 +20,15 @@ const [check1, setCheck1] = useState(false);
 
 
  const handlelogin = () => {
-    if(password === repassword || password === " " || repassword === " " ){
-      return Alert.alert("Login Successfully", 'email: ${email}\npassword: ${password}' );
+    if(password === "" || repassword === " " || fname === "" || lname === "" ||  email === "" ){
+      return Alert.alert("Error Login", 'Required field must be completed.' );
     }
-  return Alert.alert("Error Login", 'Password must be the same.' );
+    if(password !== repassword) {
+      return Alert.alert("Error Login", 'Password must be the same.' );
+    } 
+    return Alert.alert("Login Successfully", 'email: ${email}\npassword: ${password}' );
 }
+
 
   setTimeout(() => {
     setLoading(false);
