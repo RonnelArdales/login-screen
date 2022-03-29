@@ -1,262 +1,309 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Alert, Dimensions, Image, ImageBackground, ScrollView, StyleSheet,   TouchableOpacity } from 'react-native';
-import { Button, CheckBox,  } from 'react-native-elements';
+import { Button, CheckBox, colors,  } from 'react-native-elements';
 import { TextInput } from 'react-native-paper';
-
+import { Formik } from 'formik';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import ViewWithLoading from '../components/ViewWithLoading';
+import * as yup from "yup";
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
-  const [fname, setFname] = useState<string>("");
-  const [lname, setLname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repassword, setRepassword] = useState("");
-  const [visible, setvisible] = useState(true);
+const [visible, setvisible] = useState(true);
 const [loading, setLoading]= useState(true);
 const [check1, setCheck1] = useState(false);
 
-
- const handlelogin = () => {
-    if(password === "" || repassword === " " || fname === "" || lname === "" ||  email === "" ){
-      return Alert.alert("Error Login", 'Required field must be completed.' );
-    }
-    if(password !== repassword) {
-      return Alert.alert("Error Login", 'Password must be the same.' );
-    } 
-    return Alert.alert("Login Successfully", 'email: ${email}\npassword: ${password}' );
-}
-
+const loginschema = yup.object({
+fname: yup.string().required('First name is required'),
+lname: yup.string().required('Last name is required'),
+email: yup.string().required('Email address is required')
+.matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/, 'Invalid email address'),
+password: yup.string().required('Password is required')
+.min(6, 'Minimun of 6 letters'),
+repassword: yup.string().required('Password is required')
+.oneOf([yup.ref('password'), null], 'Confirm password does not match')
+}); 
 
   setTimeout(() => {
-    setLoading(false);
+    setLoading(false); 
   }, 1000);
 
- 
-
   return (
-    <ScrollView keyboardShouldPersistTaps='handled'>
+      
+<ScrollView contentContainerStyle={{
+ flexGrow:1
+}}>
+<View style={{flex:1, height:850, width:'100%', backgroundColor:'white'}}>
+  <View style={ styles.container1}>
+    <Image
+                      source={{ uri: 'https://scontent.fmnl11-1.fna.fbcdn.net/v/t1.15752-9/275616101_486852396320819_6296659550059139399_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeE5VpzN_dJYlz_NE238Aw220kxN8jOpC2XSTE3yM6kLZUOqCf_rNtjNzt6WxYFhx8SIzvU67fTKWozdkPPfMyH5&_nc_ohc=gCpqFHoa97IAX_AYtsr&_nc_ht=scontent.fmnl11-1.fna&oh=03_AVIunjAnAA4DahEDeYQvUx6jxVPJhKoeXsO2iQlYQKEBnQ&oe=6266B313' }}
+                      style={styles.logo }
+                    >
+                      </Image>
+                      <View style={styles.container3}>
+                      <Text style={styles.registercontainer}>
+    Register
+    </Text>
+   <Text style={styles.newaccountcontainer}>
+     Create a new Acount
+   </Text>
+                      </View>
 
-<View style={ styles.container1}>
-<ImageBackground
-                    source={{ uri: 'https://i.pinimg.com/564x/5d/a0/a3/5da0a37951df9594ae0dd93eaff93ceb.jpg' }}
-                    style={styles.logo }
-                   >
-  <Text style={styles.registercontainer}>
-   Register
-  </Text>
 <View style={styles.container2}>
-<Text style={{color:"white", textAlign:"center", fontSize:15, marginTop:10}}>
-           Please Enter your Personal info
-         </Text>
+<Formik initialValues={{
+                      fname:'',
+                      lname:'',
+                      email:'',
+                      password:'',
+                      repassword:''
+                    }}
+                    onSubmit={(values, action) =>{
+                    
+                    }}
+                    validationSchema={loginschema}
 
-<View style={styles.custominputext}>
-         
-          <TextInput
-       label={"First Name"}
-      value={fname}
-     autoComplete={false}
-     style={{
-    backgroundColor:"transparent",
-    width: "100%",
-    }}
-    mode="outlined"
-    
-    theme={{
-      colors: {
-                 placeholder: 'white', text: 'white', primary: 'white',
-          
-         }
-   }}
-    
-    onChangeText={(text:string) =>{setFname(text);}}
-    />
+                    >
+                    {({values, handleChange, handleSubmit, errors, touched}) => (
+                        <Fragment>
+                     <View style={styles.custominputext1}>
+                     
+                     <TextInput
+                     label={'FIRST NAME'}
+                     placeholder={'FIRST NAME'}
+                     placeholderTextColor={'#bbbbbb'}
+                     value={values.fname}
+                     autoComplete={false}
+                     style={{
+                     backgroundColor:"white",
+                     width: "100%",
+                     alignSelf:'center',
+                     height:60
+                     }}
+                     mode="flat"
+                     onChangeText={handleChange('fname')}
+                     error={errors.fname ? true : false}
+                     />
+                     {errors.fname && 
+                   <Text style={{ color:'red'}}>
+                     {errors.fname}
+                   </Text>
+                     }
+               </View>
+
+                   
+               <View style={styles.custominputext}>
+                          <TextInput
+                       label={'LAST NAME'}
+                       placeholder={'LAST NAME'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.lname}
+                       autoComplete={false}
+                       style={{
+                       backgroundColor:"white",
+                       width: "100%",
+                       alignSelf:'center',
+                       height:60
+                       }}
+                       mode="flat"
+                        error={errors.lname ? true : false}
+                          onChangeText={handleChange('lname')}
+                          />
+                          {errors.lname && 
+                            <Text style={{ color:'red'}}>
+                              {errors.lname}
+                            </Text>}
+                      </View>
+
+                      <View style={styles.custominputext}>
+                      <TextInput
+                       label={'EMAIL ADDRESS'}
+                       placeholder={'EMAIL ADDRESS'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.email}
+                       autoComplete={false}
+                       style={{
+                       backgroundColor:"white",
+                       width: "100%",
+                       alignSelf:'center',
+                       height:60
+                       }}
+                       mode="flat"
+                        error={errors.email ? true : false}
+                          onChangeText={handleChange('email')}
+                          />
+                            {errors.email && 
+                            <Text style={{ color:'red'}}>
+                              {errors.email}
+                              
+                            </Text>}
+                      </View>
+
+
+
+                      <View style={styles.custominputext}>
+                      <TextInput
+                       label={'PASSWORD'}
+                       placeholder={'PASSWORD'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.password}
+                       autoComplete={false}
+                       style={{
+                       backgroundColor:"white",
+                       width: "100%",
+                       alignSelf:'center',
+                       height:60
+                       }}
+                       mode="flat"
+                    error={errors.password ? true : false}
+                      onChangeText={handleChange('password')}
+                      secureTextEntry={visible}
+                      />
+                        {errors.password && 
+                        <Text style={{ color:'red'}}>
+                          {errors.password}
+                        </Text>}
+                      </View>
+
+                      <View style={styles.custominputext}>
+                      <TextInput
+                        label={'CONFIRM PASSWORD'}
+                       placeholder={'CONFIRM PASSWORD'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.repassword}
+                       autoComplete={false}
+                     
+                       style={{
+                       backgroundColor:"white",
+                       width: "100%",
+                       alignSelf:'center',
+                       height:60
+                       }}
+                       mode="flat"
+                    error={errors.repassword ? true : false}
+                      secureTextEntry={visible}
+                      onChangeText={handleChange('repassword')}
+                      />
+                      {errors.repassword && 
+                        <Text style={{ color:'red'}}>
+                          {errors.repassword}
+                        </Text>}
+                      </View>
+
+
+                    <View style={styles.custominputext3}>
+                          <Button
+                                    title="Register"
+                                    buttonStyle={{
+                                    height:50,
+                                    borderRadius:5,  
+                                    padding:6, 
+                                    backgroundColor:'#03396c',
+                                    alignSelf:"center",
+                                    width:"100%",
+                                    marginHorizontal:58,
+                                    marginTop:10  
+                                      
+                                    }}
+                                  titleStyle={{
+                                    fontSize: 20,
+                                    color: 'white',
+                                    fontFamily: 'poppins-regular',
+                                    textAlign: 'center',
+                                    fontWeight:"bold"
+                                
+                                  }}
+                                  onPress={() => handleSubmit() }
+                                  
+                                  />
+                              </View>
+                              </Fragment>
+                      )}
+                      </Formik>
+
 </View>
-<View style={styles.custominputext}>
-    <TextInput
-  label={"Last Name"}
-    value={lname}
-   autoComplete={false}
-  mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
-  onChangeText={(text:string) =>{setLname(text);}}
-
-  />
-    </View>
-   <View style={styles.custominputext}>
-   <TextInput
-    label={"Email Address"}
-    value={email}
-   autoComplete={false}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
-  onChangeText={(text:string) =>{setEmail(text);}}
-
-  />
-   </View>
-   <View style={styles.custominputext}>
-   <TextInput
-    label={"Password"}
-    value={password}
-   autoComplete={true}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
-  onChangeText={(text:string) =>{setPassword(text);}}
-  secureTextEntry={visible}
-  />
-   </View>
-   <View style={styles.custominputext}>
-   <TextInput
-    label={"Re-type Password"}
-    value={repassword}
-   autoComplete={false}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
-  secureTextEntry={visible}
-  onChangeText={(text:string) =>{setRepassword(text);}}
-  />
-   </View>
-
-
-<View style={styles.custominputext}>
-       <Button
-                title="Register"
-                buttonStyle={{
-        
-              height:50,
-                  borderRadius:5,  
-                  padding:6, 
-                  borderWidth: 1, 
-                  borderColor:'black', 
-                  backgroundColor:'white',
-                  alignSelf:"center",
-                  width:"100%",
-                  marginHorizontal:58,
-                  marginTop:10
-                  
-                  
-                }}
-               titleStyle={{
-                fontSize: 17,
-                color: 'black',
-                fontFamily: 'poppins-regular',
-                textAlign: 'center',
-            
-               }}
-               onPress={handlelogin}
-              
-              />
      
-          </View>
+            </View>
+  
 </View>
 
-</ImageBackground>
-
-</View>
 </ScrollView>
 
- 
   );
-              }
+      }
               
 const styles=StyleSheet.create({
   container1:{
     alignItems:'center',
-  
+  flex:1
   },
  
   container2:{
-    alignSelf:'center',
-    flex:1,
-    marginVertical:100,
-    height: '70%',
-    width: '92%',
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: 'white',
-    borderRadius: 10,
-    overflow: 'hidden',
-    padding: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
- 
-    flexDirection: 'column',
-    position:'absolute',
-marginTop:150
+    flex:1, height:"auto", 
+    width:"100%", 
+    borderRadius:30, 
+    position:'absolute', 
+    marginTop:210,
+    backgroundColor:'white',
+
   },
+
   logo:{
-width:"100%",
-position:"relative",
-height:850,
-flex:1,
-resizeMode:"cover"
+  width:"100%",
+  position:"relative",
+  height:400,
+
+  resizeMode:"cover"
   },
-  custominputext:{
-    backgroundColor:"transparent",
-    width:"90%", 
-    flexDirection:"row", 
+
+  custominputext1:{
+    backgroundColor:"white",
+    width:"80%", 
     justifyContent:"center", 
-    marginTop:20, 
+    marginTop:35, 
+    padding:0, 
+    alignSelf:'center'
+  },
+
+  custominputext:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"center", 
+    marginTop:15, 
     padding:0, 
     alignSelf:"center"
   },
+
+  custominputext3:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"center", 
+    marginTop:20, 
+    padding:0, 
+    alignSelf:"center",
+    marginBottom:100
+  },
+
+  
   registercontainer:{
-    position:"absolute",  
     fontSize:35,
     color:"white", 
-    marginTop:80, 
-    justifyContent:"center", 
-    alignSelf:"center", 
+    fontWeight:'bold',
+  },
+
+  newaccountcontainer:{
+color:'white',
+fontSize:20,
+
+  },
+
+  container3:{
+marginTop:100,
+justifyContent:"center",
+alignSelf:'flex-start',
+marginHorizontal:20, 
+backgroundColor:'transparent',
+position:'absolute'
   }
 
 });
-
-
-  
