@@ -168,7 +168,7 @@ repassword: yup.string().required('Password is required')
 
                     <View style={styles.custominputext3}>
                           <Button
-                                    title="Register"
+                                    title="Sign Up"
                                     buttonStyle={{
                                     height:50,
                                     borderRadius:5,  
