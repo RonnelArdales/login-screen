@@ -43,7 +43,7 @@ repassword: yup.string().required('Password is required')
                       </Image>
                       <View style={styles.container3}>
                       <Text style={styles.registercontainer}>
-    Register
+    Sign Up
     </Text>
    <Text style={styles.newaccountcontainer}>
      Create a new Acount
@@ -307,7 +307,7 @@ const styles=StyleSheet.create({
   },
 
   registercontainer:{
-    fontSize:35,
+    fontSize:38,
     color:"white", 
     fontWeight:'bold',
   },
