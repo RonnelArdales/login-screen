@@ -23,6 +23,7 @@ const [check1, setCheck1] = useState(false);
     if(password === "" || repassword === " " || fname === "" || lname === "" ||  email === "" ){
       return Alert.alert("Error Login", 'Required field must be completed.' );
     }
+    else
     if(password !== repassword) {
       return Alert.alert("Error Login", 'Password must be the same.' );
     } 
@@ -58,18 +59,8 @@ const [check1, setCheck1] = useState(false);
        label={"First Name"}
       value={fname}
      autoComplete={false}
-     style={{
-    backgroundColor:"transparent",
-    width: "100%",
-    }}
-    mode="outlined"
-    
-    theme={{
-      colors: {
-                 placeholder: 'white', text: 'white', primary: 'white',
-          
-         }
-   }}
+     style={styles.input}
+    mode="flat"
     
     onChangeText={(text:string) =>{setFname(text);}}
     />
@@ -79,18 +70,9 @@ const [check1, setCheck1] = useState(false);
   label={"Last Name"}
     value={lname}
    autoComplete={false}
-  mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
+  mode="flat"
+   style={styles.input}
+ 
   onChangeText={(text:string) =>{setLname(text);}}
 
   />
@@ -100,18 +82,9 @@ const [check1, setCheck1] = useState(false);
     label={"Email Address"}
     value={email}
    autoComplete={false}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
+   mode="flat"
+   style={styles.input}
+
   onChangeText={(text:string) =>{setEmail(text);}}
 
   />
@@ -121,18 +94,9 @@ const [check1, setCheck1] = useState(false);
     label={"Password"}
     value={password}
    autoComplete={true}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
+   mode="flat"
+   style={styles.input}
+
   onChangeText={(text:string) =>{setPassword(text);}}
   secureTextEntry={visible}
   />
@@ -142,49 +106,33 @@ const [check1, setCheck1] = useState(false);
     label={"Re-type Password"}
     value={repassword}
    autoComplete={false}
-   mode="outlined"
-   style={{
-  backgroundColor:"transparent",
-  width:"100%",
-  borderRadius:10
-  }}
-  theme={{
-    colors: {
-               placeholder: 'white', text: 'white', primary: 'white',
-        
-       }
- }}
+   mode="flat"
+   style={styles.input}
+
   secureTextEntry={visible}
   onChangeText={(text:string) =>{setRepassword(text);}}
   />
    </View>
 
 
-<View style={styles.custominputext}>
+<View style={styles.registerbuttoncontainer}>
        <Button
                 title="Register"
                 buttonStyle={{
-        
-              height:50,
-                  borderRadius:5,  
-                  padding:6, 
-                  borderWidth: 1, 
-                  borderColor:'black', 
-                  backgroundColor:'white',
-                  alignSelf:"center",
-                  width:"100%",
-                  marginHorizontal:58,
-                  marginTop:10
-                  
-                  
+           height:"100%",
+           borderColor:"white",
+           borderWidth:1,
+           borderRadius:10,
                 }}
+
                titleStyle={{
-                fontSize: 17,
-                color: 'black',
+                fontSize: 23,
+                color: 'white',
                 fontFamily: 'poppins-regular',
                 textAlign: 'center',
-            
-               }}
+                fontWeight:'bold'
+              }}
+
                onPress={handlelogin}
               
               />
@@ -196,7 +144,6 @@ const [check1, setCheck1] = useState(false);
 
 </View>
 </ScrollView>
-
  
   );
               }
@@ -204,7 +151,6 @@ const [check1, setCheck1] = useState(false);
 const styles=StyleSheet.create({
   container1:{
     alignItems:'center',
-  
   },
  
   container2:{
@@ -214,6 +160,7 @@ const styles=StyleSheet.create({
     height: '70%',
     width: '92%',
     backgroundColor: 'transparent',
+    opacity:.9,
     borderWidth: 2,
     borderColor: 'white',
     borderRadius: 10,
@@ -226,27 +173,47 @@ const styles=StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
- 
     flexDirection: 'column',
     position:'absolute',
-marginTop:150
+    marginTop:150
   },
+
   logo:{
-width:"100%",
-position:"relative",
-height:850,
-flex:1,
-resizeMode:"cover"
+  width:"100%",
+  position:"relative",
+  height:826,
+  flex:1,
+  resizeMode:"cover"
   },
+
   custominputext:{
-    backgroundColor:"transparent",
-    width:"90%", 
-    flexDirection:"row", 
-    justifyContent:"center", 
-    marginTop:20, 
-    padding:0, 
-    alignSelf:"center"
+    borderRadius: 10,
+        height: 55,
+        overflow: 'hidden',
+        marginTop:25,
+        width:"90%",
+        alignSelf:"center"
   },
+
+  input:{
+    borderRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    height: 57,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    width:"100%"
+  },
+
+  registerbuttoncontainer:{
+    borderRadius: 10,
+        height: 55,
+        overflow: 'hidden',
+        marginTop:38,
+        width:"90%",
+        alignSelf:"center"
+  },
+
   registercontainer:{
     position:"absolute",  
     fontSize:35,
@@ -254,6 +221,7 @@ resizeMode:"cover"
     marginTop:80, 
     justifyContent:"center", 
     alignSelf:"center", 
+    padding:0
   }
 
 });
