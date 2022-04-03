@@ -66,6 +66,8 @@ repassword: yup.string().required('Password is required')
                     >
                     {({values, handleChange, handleSubmit, errors, touched}) => (
                         <Fragment>
+
+                          <View style={styles.firstlastnamecontainer}>
                      <View style={styles.custominputext1}>
                      
                      <TextInput
@@ -74,13 +76,9 @@ repassword: yup.string().required('Password is required')
                      placeholderTextColor={'#bbbbbb'}
                      value={values.fname}
                      autoComplete={false}
-                     style={{
-                     backgroundColor:"white",
-                     width: "100%",
-                     alignSelf:'center',
-                     height:60
-                     }}
+                     style={styles.textinputstyle}
                      mode="flat"
+                     autoFocus={true}
                      onChangeText={handleChange('fname')}
                      error={errors.fname ? true : false}
                      />
@@ -89,22 +87,15 @@ repassword: yup.string().required('Password is required')
                      {errors.fname}
                    </Text>
                      }
-               </View>
-
-                   
-               <View style={styles.custominputext}>
+                     </View>
+                     <View style={styles.custominputext1}>
                           <TextInput
                        label={'LAST NAME'}
                        placeholder={'LAST NAME'}
                        placeholderTextColor={'#bbbbbb'}
                        value={values.lname}
                        autoComplete={false}
-                       style={{
-                       backgroundColor:"white",
-                       width: "100%",
-                       alignSelf:'center',
-                       height:60
-                       }}
+                       style={styles.textinputstyle}
                        mode="flat"
                         error={errors.lname ? true : false}
                           onChangeText={handleChange('lname')}
@@ -114,7 +105,8 @@ repassword: yup.string().required('Password is required')
                               {errors.lname}
                             </Text>}
                       </View>
-
+                      </View>
+                      
                       <View style={styles.custominputext}>
                       <TextInput
                        label={'EMAIL ADDRESS'}
@@ -122,12 +114,7 @@ repassword: yup.string().required('Password is required')
                        placeholderTextColor={'#bbbbbb'}
                        value={values.email}
                        autoComplete={false}
-                       style={{
-                       backgroundColor:"white",
-                       width: "100%",
-                       alignSelf:'center',
-                       height:60
-                       }}
+                       style={styles.textinputstyle}
                        mode="flat"
                         error={errors.email ? true : false}
                           onChangeText={handleChange('email')}
@@ -139,8 +126,6 @@ repassword: yup.string().required('Password is required')
                             </Text>}
                       </View>
 
-
-
                       <View style={styles.custominputext}>
                       <TextInput
                        label={'PASSWORD'}
@@ -148,12 +133,7 @@ repassword: yup.string().required('Password is required')
                        placeholderTextColor={'#bbbbbb'}
                        value={values.password}
                        autoComplete={false}
-                       style={{
-                       backgroundColor:"white",
-                       width: "100%",
-                       alignSelf:'center',
-                       height:60
-                       }}
+                       style={styles.textinputstyle}
                        mode="flat"
                     error={errors.password ? true : false}
                       onChangeText={handleChange('password')}
@@ -173,23 +153,18 @@ repassword: yup.string().required('Password is required')
                        value={values.repassword}
                        autoComplete={false}
                      
-                       style={{
-                       backgroundColor:"white",
-                       width: "100%",
-                       alignSelf:'center',
-                       height:60
-                       }}
+                       style={styles.textinputstyle}
                        mode="flat"
                     error={errors.repassword ? true : false}
                       secureTextEntry={visible}
                       onChangeText={handleChange('repassword')}
                       />
+                      
                       {errors.repassword && 
                         <Text style={{ color:'red'}}>
                           {errors.repassword}
                         </Text>}
                       </View>
-
 
                     <View style={styles.custominputext3}>
                           <Button
@@ -214,9 +189,48 @@ repassword: yup.string().required('Password is required')
                                 
                                   }}
                                   onPress={() => handleSubmit() }
-                                  
+                            
                                   />
                               </View>
+
+                              <View style={styles.orcontainer}>
+                                <View style={styles.line} />
+                                  <View>
+                                <Text style={{width: 50, textAlign: 'center'}}>or</Text>
+                                </View>
+                                <View style={styles.line} />
+                                </View>
+
+                                <View style={styles.otherregistration}>
+                                  <View style={styles.signin}>
+                                  <Image source={{ uri: 'https://logowik.com/content/uploads/images/985_google_g_icon.jpg' }}
+                                  style={{
+                                    resizeMode:"cover",
+                                    height:35,
+                                    width:35,
+                                    backgroundColor:"transparent",
+                                    alignSelf:"center"
+                                  }}
+                                  >
+                                  </Image>
+                                  <Text style={{alignSelf:"center", color:"black", fontWeight:"bold", fontSize:15}}>Google</Text>
+                                  </View>
+
+                                  <View style={styles.signin}>
+                                  <Image source={{ uri: 'https://i.pinimg.com/564x/b3/26/b5/b326b5f8d23cd1e0f18df4c9265416f7--facebook-icon-negative-feedback.jpg' }}
+                                  style={{
+                                    resizeMode:"contain",
+                                    height:35,
+                                    width:35,
+                                    backgroundColor:"transparent",
+                                    alignSelf:"center"
+                                  }}
+                                  >
+                                  </Image>
+                                  <Text style={{alignSelf:"center", color:"black", fontWeight:"bold", fontSize:15}}>Facebook</Text>
+                                  </View>
+                              
+                                </View>
                               </Fragment>
                       )}
                       </Formik>
@@ -252,17 +266,25 @@ const styles=StyleSheet.create({
   width:"100%",
   position:"relative",
   height:400,
-
   resizeMode:"cover"
   },
 
   custominputext1:{
     backgroundColor:"white",
-    width:"80%", 
+    width:140, 
     justifyContent:"center", 
-    marginTop:35, 
     padding:0, 
     alignSelf:'center'
+  },
+
+  firstlastnamecontainer:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"space-between", 
+    marginTop:35, 
+    padding:0, 
+    alignSelf:'center',
+    flexDirection:"row",
   },
 
   custominputext:{
@@ -281,10 +303,9 @@ const styles=StyleSheet.create({
     marginTop:20, 
     padding:0, 
     alignSelf:"center",
-    marginBottom:100
+    marginBottom:30
   },
 
-  
   registercontainer:{
     fontSize:35,
     color:"white", 
@@ -304,6 +325,50 @@ alignSelf:'flex-start',
 marginHorizontal:20, 
 backgroundColor:'transparent',
 position:'absolute'
+  },
+
+  line:{
+    flex: 1, 
+    height: 1, 
+    backgroundColor: 'black'
+  },
+
+  orcontainer:{
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    width:"80%", 
+    justifyContent:"center", 
+    alignSelf:'center'
+  },
+
+  otherregistration:{
+    flexDirection:"row", 
+    width:"75%", 
+    alignSelf:"center",
+    justifyContent:"space-between", 
+    backgroundColor:"white", 
+    padding:0, 
+    marginTop:20
+  },
+
+  signin:{
+    borderRadius:15, 
+    borderColor:"#c4c4c4",
+    borderWidth:1, 
+    backgroundColor:"white", 
+    flexDirection:"row", 
+    height:50, 
+    width:135, 
+    justifyContent:"center",
+  },
+
+  textinputstyle:{
+    backgroundColor:"white",
+    width: "100%",
+    alignSelf:'center',
+    height:60
   }
+
+
 
 });
