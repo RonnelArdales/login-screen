@@ -221,7 +221,7 @@ style={{
           </Text>
           </View>
           <View style={{backgroundColor:'#FFFFFF'}}>
-          <TouchableOpacity onPress={() => navigation.navigate("TabTwo")}>
+          <TouchableOpacity>
           <Text style={{  
              fontWeight:'bold',
                 color:'blue',
