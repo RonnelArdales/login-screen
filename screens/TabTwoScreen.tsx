@@ -1,260 +1,374 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Alert, Dimensions, Image, ImageBackground, ScrollView, StyleSheet,   TouchableOpacity } from 'react-native';
-import { Button, CheckBox,  } from 'react-native-elements';
+import { Button, CheckBox, colors,  } from 'react-native-elements';
 import { TextInput } from 'react-native-paper';
-
+import { Formik } from 'formik';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import ViewWithLoading from '../components/ViewWithLoading';
+import * as yup from "yup";
 
 export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState("");
-  const [visble, setvisible] = useState(true);
+const [visible, setvisible] = useState(true);
 const [loading, setLoading]= useState(true);
 const [check1, setCheck1] = useState(false);
-  const credentials ={
-email:"ronnelardales2192@gmail.com",
-password:"12345",
 
-  }
-
- const handlelogin = () => {
-    if(credentials.email === email && credentials.password === password){
-      return Alert.alert("Login Successfully", 'email: ${email}\npassword: ${password}' );
-    }
-  return Alert.alert("Error Login", 'email: ${email}\npassword: ${password}' );
-}
+const loginschema = yup.object({
+fname: yup.string().required('First name is required'),
+lname: yup.string().required('Last name is required'),
+email: yup.string().required('Email address is required')
+.matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/, 'Invalid email address'),
+password: yup.string().required('Password is required')
+.min(6, 'Minimun of 6 letters'),
+repassword: yup.string().required('Password is required')
+.oneOf([yup.ref('password'), null], 'Confirm password does not match')
+}); 
 
   setTimeout(() => {
-    setLoading(false);
+    setLoading(false); 
   }, 1000);
 
   return (
-<ViewWithLoading loading={loading}>
-  
-<View style={ styles.container1}>
-      <View style={styles.container2}>
-        <View style={styles.backgroundimagecontainer}>
-          <ImageBackground
-            source={{ uri: 'https://scontent.fmnl11-1.fna.fbcdn.net/v/t1.15752-9/274706547_657906742161449_6372853650668765658_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeF1GtJCxW3DE8x1S9Rna_6xZDsPeMYnLnNkOw94xicuc_nkXTZROsSSv69rPKCaFy1owm-xa4r0-OX4jVsaKPa0&_nc_ohc=wAP7T2YoFvkAX8TSyyH&_nc_ht=scontent.fmnl11-1.fna&oh=03_AVLsRb8uESdOXRYfU_B7BtcBYnD8SEHsTTgb_RCE7YIUhQ&oe=624748DC' }}
-            style={{
-              height: '100%',
-              width: '100%',
-            }}
-          />
-        </View>
+      
+<ScrollView contentContainerStyle={{
+ flexGrow:1
+}}>
+<View style={{flex:1, height:850, width:'100%', backgroundColor:'white'}}>
+  <View style={ styles.container1}>
+    <Image
+                      source={{ uri: 'https://scontent.fmnl11-1.fna.fbcdn.net/v/t1.15752-9/275616101_486852396320819_6296659550059139399_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeE5VpzN_dJYlz_NE238Aw220kxN8jOpC2XSTE3yM6kLZUOqCf_rNtjNzt6WxYFhx8SIzvU67fTKWozdkPPfMyH5&_nc_ohc=gCpqFHoa97IAX_AYtsr&_nc_ht=scontent.fmnl11-1.fna&oh=03_AVIunjAnAA4DahEDeYQvUx6jxVPJhKoeXsO2iQlYQKEBnQ&oe=6266B313' }}
+                      style={styles.logo }
+                    >
+                      </Image>
+                      <View style={styles.container3}>
+                      <Text style={styles.registercontainer}>
+    Sign Up
+    </Text>
+   <Text style={styles.newaccountcontainer}>
+     Create a new Acount
+   </Text>
+                      </View>
 
-        <View style={styles.backgroundcontainer}>
-            <View style={styles.imagecontainer}>
-              <Image
-                    source={{ uri: 'https://www.nicepng.com/png/full/138-1388174_login-account-icon.png'}}
-                    style={{
-                    height: '91%',
-                    width: '100%',
-                    resizeMode: 'center',
+<View style={styles.container2}>
+<Formik initialValues={{
+                      fname:'',
+                      lname:'',
+                      email:'',
+                      password:'',
+                      repassword:''
+                    }}
+                    onSubmit={(values, action) =>{
                     
                     }}
-                   />
-            </View>
-       
-        <View style={{marginHorizontal:11, marginVertical: 2, backgroundColor:'#0000', padding:0,}}>
-        <TextInput
-      label="Email Address"
-      value={email}
-     autoComplete={false}
-     style={{
-     marginVertical:0,
-       padding:0,
-       backgroundColor:'white'
-     }}
-     
-     onChangeText={(text:string) =>{setEmail(text);}}
+                    validationSchema={loginschema}
 
-    
-/>
-        </View>
-      
-          <View style={{marginHorizontal:11, backgroundColor:'#0000'}}>
-          <TextInput
-      label="Password"
-      value={password}
-     autoComplete={false}
-     style={{
-      padding:0,
-      backgroundColor:'white'
-    }}
-    
-    onChangeText={(text:string) =>{setPassword(text);}}
-    secureTextEntry={visble}
-    right={<TextInput.Icon name={visble ? "eye" : "eye-off"} 
-    onPress={() => {setvisible(!visble);}}
-    />}
-     
-/>
-        </View>
-        <View style={{
-            backgroundColor:'#FFFFFF' ,
-            marginHorizontal:15,
-            flexDirection:'row', 
-            justifyContent:'space-between',
-            marginTop:0,
-            
-            }}>
-          <View style={{backgroundColor:'#FFFFFF',}}>
-          <CheckBox
-        center
-        title="Remember me"
-        checked={check1}
-        onPress={() => setCheck1(!check1)}
-        containerStyle={{marginLeft:0, padding:0,  backgroundColor:'#0000', borderWidth:0, marginTop:0}}
-        
-      />
-       
-          </View>
-          <View style={{backgroundColor:'#FFFFFF', marginTop:3}}>
-          <TouchableOpacity>
-          <Text style={{  
-             fontWeight:'bold',
-                color:'blue',
-                fontSize: 14,
-                }}>
-            Forgot Password?
-            </Text>
-          </TouchableOpacity>
-          
-          </View>
-      
-        </View>
-        <View style={{backgroundColor:'white'}}>
-       <Button
-                title="Login"
-                buttonStyle={{
-                  marginTop:60, 
-                  marginHorizontal:12,
-                  borderRadius:10,  
-                  padding:6, 
-                  borderWidth: 1, 
-                  borderColor:'black', 
-                  backgroundColor:'#8338ec' 
-                }}
-               titleStyle={{
-                fontSize: 15,
-                color: '#FFFFFF',
-                fontFamily: 'poppins-regular',
-                textAlign: 'center',
-            
-               }}
-               onPress={handlelogin}
-              
-              />
-     
-          </View>
+                    >
+                    {({values, handleChange, handleSubmit, errors, touched}) => (
+                        <Fragment>
 
+                          <View style={styles.firstlastnamecontainer}>
+                     <View style={styles.custominputext1}>
+                     
+                     <TextInput
+                     label={'FIRST NAME'}
+                     placeholder={'FIRST NAME'}
+                     placeholderTextColor={'#bbbbbb'}
+                     value={values.fname}
+                     autoComplete={false}
+                     style={styles.textinputstyle}
+                     mode="flat"
+                     autoFocus={true}
+                     onChangeText={handleChange('fname')}
+                     error={errors.fname ? true : false}
+                     />
+                     {errors.fname && 
+                   <Text style={{ color:'red'}}>
+                     {errors.fname}
+                   </Text>
+                     }
+                     </View>
+                     <View style={styles.custominputext1}>
+                          <TextInput
+                       label={'LAST NAME'}
+                       placeholder={'LAST NAME'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.lname}
+                       autoComplete={false}
+                       style={styles.textinputstyle}
+                       mode="flat"
+                        error={errors.lname ? true : false}
+                          onChangeText={handleChange('lname')}
+                          />
+                          {errors.lname && 
+                            <Text style={{ color:'red'}}>
+                              {errors.lname}
+                            </Text>}
+                      </View>
+                      </View>
+                      
+                      <View style={styles.custominputext}>
+                      <TextInput
+                       label={'EMAIL ADDRESS'}
+                       placeholder={'EMAIL ADDRESS'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.email}
+                       autoComplete={false}
+                       style={styles.textinputstyle}
+                       mode="flat"
+                        error={errors.email ? true : false}
+                          onChangeText={handleChange('email')}
+                          />
+                            {errors.email && 
+                            <Text style={{ color:'red'}}>
+                              {errors.email}
+                              
+                            </Text>}
+                      </View>
 
-      <View style={{
-            backgroundColor:'#FFFFFF' ,
-            marginHorizontal:15,
-            flexDirection:'row', 
-            justifyContent:'center',
-            marginTop:5,
-            marginBottom: 75,  
-            
-            }}>
-          <View style={{backgroundColor:'#FFFFFF',}}>
-          <Text style={{fontSize: 14, color:'black', marginRight:4}}>
-              Not Registered?
-          </Text>
-          </View>
-          <View style={{backgroundColor:'#FFFFFF'}}>
-          <TouchableOpacity>
-          <Text style={{  
-             fontWeight:'bold',
-                color:'blue',
-                fontSize: 14,
-                }}>
-        Create an account
-            </Text>
-          </TouchableOpacity>
-          </View>
-        </View>
-        </View>
+                      <View style={styles.custominputext}>
+                      <TextInput
+                       label={'PASSWORD'}
+                       placeholder={'PASSWORD'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.password}
+                       autoComplete={false}
+                       style={styles.textinputstyle}
+                       mode="flat"
+                    error={errors.password ? true : false}
+                      onChangeText={handleChange('password')}
+                      secureTextEntry={visible}
+                      />
+                        {errors.password && 
+                        <Text style={{ color:'red'}}>
+                          {errors.password}
+                        </Text>}
+                      </View>
+
+                      <View style={styles.custominputext}>
+                      <TextInput
+                        label={'CONFIRM PASSWORD'}
+                       placeholder={'CONFIRM PASSWORD'}
+                       placeholderTextColor={'#bbbbbb'}
+                       value={values.repassword}
+                       autoComplete={false}
+                     
+                       style={styles.textinputstyle}
+                       mode="flat"
+                    error={errors.repassword ? true : false}
+                      secureTextEntry={visible}
+                      onChangeText={handleChange('repassword')}
+                      />
+                      
+                      {errors.repassword && 
+                        <Text style={{ color:'red'}}>
+                          {errors.repassword}
+                        </Text>}
+                      </View>
+
+                    <View style={styles.custominputext3}>
+                          <Button
+                                    title="Sign Up"
+                                    buttonStyle={{
+                                    height:50,
+                                    borderRadius:5,  
+                                    padding:6, 
+                                    backgroundColor:'#03396c',
+                                    alignSelf:"center",
+                                    width:"100%",
+                                    marginHorizontal:58,
+                                    marginTop:10  
+                                      
+                                    }}
+                                  titleStyle={{
+                                    fontSize: 20,
+                                    color: 'white',
+                                    fontFamily: 'poppins-regular',
+                                    textAlign: 'center',
+                                    fontWeight:"bold"
+                                
+                                  }}
+                                  onPress={() => handleSubmit() }
+                            
+                                  />
+                              </View>
+
+                              <View style={styles.orcontainer}>
+                                <View style={styles.line} />
+                                  <View>
+                                <Text style={{width: 50, textAlign: 'center'}}>or</Text>
+                                </View>
+                                <View style={styles.line} />
+                                </View>
+
+                                <View style={styles.otherregistration}>
+                                  <View style={styles.signin}>
+                                  <Image source={{ uri: 'https://logowik.com/content/uploads/images/985_google_g_icon.jpg' }}
+                                  style={{
+                                    resizeMode:"cover",
+                                    height:35,
+                                    width:35,
+                                    backgroundColor:"transparent",
+                                    alignSelf:"center"
+                                  }}
+                                  >
+                                  </Image>
+                                  <Text style={{alignSelf:"center", color:"black", fontWeight:"bold", fontSize:15}}>Google</Text>
+                                  </View>
+
+                                  <View style={styles.signin}>
+                                  <Image source={{ uri: 'https://i.pinimg.com/564x/b3/26/b5/b326b5f8d23cd1e0f18df4c9265416f7--facebook-icon-negative-feedback.jpg' }}
+                                  style={{
+                                    resizeMode:"contain",
+                                    height:35,
+                                    width:35,
+                                    backgroundColor:"transparent",
+                                    alignSelf:"center"
+                                  }}
+                                  >
+                                  </Image>
+                                  <Text style={{alignSelf:"center", color:"black", fontWeight:"bold", fontSize:15}}>Facebook</Text>
+                                  </View>
+                              
+                                </View>
+                              </Fragment>
+                      )}
+                      </Formik>
+
 </View>
-      </View>
-</ViewWithLoading>
-  );
-              }
-              
+     
+            </View>
+  
+</View>
 
+</ScrollView>
+
+  );
+      }
+              
 const styles=StyleSheet.create({
   container1:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center' 
+    alignItems:'center',
+  flex:1
   },
+ 
   container2:{
-    height:'100%',
-    width:'100%'
+    flex:1, height:"auto", 
+    width:"100%", 
+    borderRadius:30, 
+    position:'absolute', 
+    marginTop:210,
+    backgroundColor:'white',
+
   },
-  backgroundimagecontainer:{
-    flex:1,
-    borderRadius:0
+
+  logo:{
+  width:"100%",
+  position:"relative",
+  height:400,
+  resizeMode:"cover"
   },
-  backgroundcontainer:{
+
+  custominputext1:{
+    backgroundColor:"white",
+    width:140, 
+    justifyContent:"center", 
+    padding:0, 
+    alignSelf:'center'
+  },
+
+  firstlastnamecontainer:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"space-between", 
+    marginTop:35, 
+    padding:0, 
     alignSelf:'center',
-    flex:1,
-    marginVertical:100,
-    height: '80%',
-    width: '92%',
-    backgroundColor: '#ffffff',
-    borderWidth: 2,
-    borderColor: '#42C2FF',
-    borderRadius: 10,
-    overflow: 'hidden',
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
- 
-    flexDirection: 'column',
-    position:'absolute'
+    flexDirection:"row",
   },
-  imagecontainer:{
+
+  custominputext:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"center", 
+    marginTop:15, 
+    padding:0, 
+    alignSelf:"center"
+  },
+
+  custominputext3:{
+    backgroundColor:"white",
+    width:"80%", 
+    justifyContent:"center", 
+    marginTop:20, 
+    padding:0, 
+    alignSelf:"center",
+    marginBottom:30
+  },
+
+  registercontainer:{
+    fontSize:38,
+    color:"white", 
+    fontWeight:'bold',
+  },
+
+  newaccountcontainer:{
+color:'white',
+fontSize:20,
+
+  },
+
+  container3:{
+marginTop:100,
+justifyContent:"center",
+alignSelf:'flex-start',
+marginHorizontal:20, 
+backgroundColor:'transparent',
+position:'absolute'
+  },
+
+  line:{
     flex: 1, 
-    borderRadius: 0, 
-    padding:0,
-    backgroundColor:'#FFFFFF' 
-
-  }, 
-  emailcontainer:{
- 
-
-
-    backgroundColor:'#FFFFFF',
-    marginHorizontal: 12, 
+    height: 1, 
+    backgroundColor: 'black'
   },
-  passwordcontainer:{
-    backgroundColor:'#FFFFFF' ,
-    padding:5, 
-    borderBottomColor:'black',
-    borderBottomWidth:1,
-    flexDirection:'row', 
-    justifyContent:'space-between',
-    marginHorizontal:12,
-    marginTop:15,
-    paddingTop:4
+
+  orcontainer:{
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    width:"80%", 
+    justifyContent:"center", 
+    alignSelf:'center'
   },
-  textcontainer:{
-    fontSize: 15,
-    color: '#999B9B',
-    fontFamily: 'poppins-regular',
-    backgroundColor:'#FFFFFF',
+
+  otherregistration:{
+    flexDirection:"row", 
+    width:"75%", 
+    alignSelf:"center",
+    justifyContent:"space-between", 
+    backgroundColor:"white", 
+    padding:0, 
+    marginTop:20
+  },
+
+  signin:{
+    borderRadius:15, 
+    borderColor:"#c4c4c4",
+    borderWidth:1, 
+    backgroundColor:"white", 
+    flexDirection:"row", 
+    height:50, 
+    width:135, 
+    justifyContent:"center",
+  },
+
+  textinputstyle:{
+    backgroundColor:"white",
+    width: "100%",
+    alignSelf:'center',
+    height:60
   }
-});
 
-  
+
+
+});

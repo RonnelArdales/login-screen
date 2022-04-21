@@ -7,199 +7,173 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import ViewWithLoading from '../components/ViewWithLoading';
 import * as yup from "yup";
+import Svg, { Path, Defs, Rect, LinearGradient, Stop } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-
-const [visible, setvisible] = useState(true);
+   const Navigation = useNavigation();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState("");
+  const [visble, setvisible] = useState(true);
 const [loading, setLoading]= useState(true);
 const [check1, setCheck1] = useState(false);
+  const credentials ={
+email:"ronnelardales2192@gmail.com",
+password:"12345",
 
-const loginschema = yup.object({
-fname: yup.string().required('First name is required'),
-lname: yup.string().required('Last name is required'),
-email: yup.string().required('Email address is required')
-.matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/, 'Invalid email address'),
-password: yup.string().required('Password is required')
-.min(6, 'Minimun of 6 letters'),
-repassword: yup.string().required('Password is required')
-.oneOf([yup.ref('password'), null], 'Confirm password does not match')
-}); 
+  }
+
+ const handlelogin = () => {
+    if(credentials.email === email && credentials.password === password){
+      navigation.navigate("HomeDrawer");
+    
+    }
+  return Alert.alert("Error Login", 'email: ${email}\npassword: ${password}' );
+}
 
   setTimeout(() => {
-    setLoading(false); 
+    setLoading(false);
   }, 1000);
+
+
 
   return (
       
-<ScrollView contentContainerStyle={{
- flexGrow:1
-}}>
-<View style={{flex:1, height:850, width:'100%', backgroundColor:'white'}}>
-  <View style={ styles.container1}>
-    <Image
-                      source={{ uri: 'https://scontent.fmnl11-1.fna.fbcdn.net/v/t1.15752-9/275616101_486852396320819_6296659550059139399_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeE5VpzN_dJYlz_NE238Aw220kxN8jOpC2XSTE3yM6kLZUOqCf_rNtjNzt6WxYFhx8SIzvU67fTKWozdkPPfMyH5&_nc_ohc=gCpqFHoa97IAX_AYtsr&_nc_ht=scontent.fmnl11-1.fna&oh=03_AVIunjAnAA4DahEDeYQvUx6jxVPJhKoeXsO2iQlYQKEBnQ&oe=6266B313' }}
-                      style={styles.logo }
-                    >
-                      </Image>
-                      <View style={styles.container3}>
+<ScrollView style={{ flexGrow:1}}> 
+
+<View style={{ padding:0, height:"100%", backgroundColor:"white", flex:1}}>
+  <View> 
+<Svg width= "100%" height="770" id="svg" viewBox="0 0 1400 1100" preserveAspectRatio="none" 
+style={{ 
+  position: "absolute",
+  top: 0,
+  left: 0,
+  height: 500,
+  width: "100%"}}
+  >
+   <LinearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
+    <Stop offset="5%" stopColor= "#32ded4ff" />
+    <Stop offset="95%" stopColor="#002bdcff"  />
+   </LinearGradient>
+   <Path d="M 0,600 C 0,600 0,300 0,300 C 117.59999999999997,310.8 235.19999999999993,321.6 412,303 C 588.8000000000001,284.4 824.8,236.4 1006,231 C 1187.2,225.6 1313.6,262.8 1440,300 C 1440,300 1440,600 1440,600 Z" fill="url(#gradient)" transform="rotate(-180 720 300)" ></Path>
+  </Svg>  
+</View>
+  <View style={styles.container3}>
                       <Text style={styles.registercontainer}>
-    Sign Up
+   Log In
     </Text>
-   <Text style={styles.newaccountcontainer}>
-     Create a new Acount
-   </Text>
-                      </View>
-
-<View style={styles.container2}>
-<Formik initialValues={{
-                      fname:'',
-                      lname:'',
-                      email:'',
-                      password:'',
-                      repassword:''
-                    }}
-                    onSubmit={(values, action) =>{
-                    
-                    }}
-                    validationSchema={loginschema}
-
-                    >
-                    {({values, handleChange, handleSubmit, errors, touched}) => (
-                        <Fragment>
-
-                          <View style={styles.firstlastnamecontainer}>
-                     <View style={styles.custominputext1}>
-                     
-                     <TextInput
-                     label={'FIRST NAME'}
-                     placeholder={'FIRST NAME'}
-                     placeholderTextColor={'#bbbbbb'}
-                     value={values.fname}
-                     autoComplete={false}
-                     style={styles.textinputstyle}
-                     mode="flat"
-                     autoFocus={true}
-                     onChangeText={handleChange('fname')}
-                     error={errors.fname ? true : false}
-                     />
-                     {errors.fname && 
-                   <Text style={{ color:'red'}}>
-                     {errors.fname}
-                   </Text>
-                     }
-                     </View>
-                     <View style={styles.custominputext1}>
-                          <TextInput
-                       label={'LAST NAME'}
-                       placeholder={'LAST NAME'}
-                       placeholderTextColor={'#bbbbbb'}
-                       value={values.lname}
-                       autoComplete={false}
-                       style={styles.textinputstyle}
-                       mode="flat"
-                        error={errors.lname ? true : false}
-                          onChangeText={handleChange('lname')}
-                          />
-                          {errors.lname && 
-                            <Text style={{ color:'red'}}>
-                              {errors.lname}
-                            </Text>}
-                      </View>
                       </View>
                       
-                      <View style={styles.custominputext}>
-                      <TextInput
-                       label={'EMAIL ADDRESS'}
-                       placeholder={'EMAIL ADDRESS'}
-                       placeholderTextColor={'#bbbbbb'}
-                       value={values.email}
-                       autoComplete={false}
-                       style={styles.textinputstyle}
-                       mode="flat"
-                        error={errors.email ? true : false}
-                          onChangeText={handleChange('email')}
-                          />
-                            {errors.email && 
-                            <Text style={{ color:'red'}}>
-                              {errors.email}
-                              
-                            </Text>}
-                      </View>
+        <View style={{marginHorizontal:25, marginVertical: 8, backgroundColor:'#0000', padding:0, marginTop:335, borderRadius:30}}>
+        <TextInput
+      label="Email Address/Username"
+      value={email}
+      mode={'outlined'}
+ 
+      activeOutlineColor={"blue"}
 
-                      <View style={styles.custominputext}>
-                      <TextInput
-                       label={'PASSWORD'}
-                       placeholder={'PASSWORD'}
-                       placeholderTextColor={'#bbbbbb'}
-                       value={values.password}
-                       autoComplete={false}
-                       style={styles.textinputstyle}
-                       mode="flat"
-                    error={errors.password ? true : false}
-                      onChangeText={handleChange('password')}
-                      secureTextEntry={visible}
-                      />
-                        {errors.password && 
-                        <Text style={{ color:'red'}}>
-                          {errors.password}
-                        </Text>}
-                      </View>
+     autoComplete={false}
+     style={{
+     marginVertical:0,
+       padding:0,
+       backgroundColor:'white',
+       height:58
 
-                      <View style={styles.custominputext}>
-                      <TextInput
-                        label={'CONFIRM PASSWORD'}
-                       placeholder={'CONFIRM PASSWORD'}
-                       placeholderTextColor={'#bbbbbb'}
-                       value={values.repassword}
-                       autoComplete={false}
-                     
-                       style={styles.textinputstyle}
-                       mode="flat"
-                    error={errors.repassword ? true : false}
-                      secureTextEntry={visible}
-                      onChangeText={handleChange('repassword')}
-                      />
-                      
-                      {errors.repassword && 
-                        <Text style={{ color:'red'}}>
-                          {errors.repassword}
-                        </Text>}
-                      </View>
+     }}
+     theme={{roundness:25}}
+     onChangeText={(text:string) =>{setEmail(text);}}
+/>
+        </View>
 
-                    <View style={styles.custominputext3}>
-                          <Button
-                                    title="Sign Up"
-                                    buttonStyle={{
-                                    height:50,
-                                    borderRadius:5,  
-                                    padding:6, 
-                                    backgroundColor:'#03396c',
-                                    alignSelf:"center",
-                                    width:"100%",
-                                    marginHorizontal:58,
-                                    marginTop:10  
-                                      
-                                    }}
-                                  titleStyle={{
-                                    fontSize: 20,
-                                    color: 'white',
-                                    fontFamily: 'poppins-regular',
-                                    textAlign: 'center',
-                                    fontWeight:"bold"
-                                
-                                  }}
-                                  onPress={() => handleSubmit() }
-                            
-                                  />
-                              </View>
+        <View style={{marginHorizontal:25, backgroundColor:'#0000',  marginVertical: 4, padding:0,}}>
+          <TextInput
+      label="Password"
+      value={password}
+      mode={"outlined"}
+     autoComplete={false}
+     style={{
+      padding:0,
+      backgroundColor:'white',
+      height:54,
 
-                              <View style={styles.orcontainer}>
+      
+    }}
+    theme={{roundness:25}}
+    onChangeText={(text:string) =>{setPassword(text);}}
+    secureTextEntry={visble}
+    
+    right={<TextInput.Icon style={{marginTop:17, marginRight:8}} name={visble ? "eye" : "eye-off"} 
+    onPress={() => {setvisible(!visble);}}
+    />}
+     
+/>
+        </View>
+
+        <View style={{
+            backgroundColor:'#FFFFFF' ,
+            marginHorizontal:28,
+            flexDirection:'row', 
+            justifyContent:'space-between',
+            marginTop:0,
+            
+            }}>
+          <View style={{backgroundColor:'#FFFFFF',}}>
+          <CheckBox
+        center
+        title="Remember me"
+        checked={check1}
+        onPress={() => setCheck1(!check1)}
+        containerStyle={{marginLeft:0, padding:0,  backgroundColor:'#0000', borderWidth:0, marginTop:0}}
+        
+      />
+       
+          </View>
+          <View style={{backgroundColor:'#FFFFFF', marginTop:3}}>
+          <TouchableOpacity>
+          <Text style={{  
+             fontWeight:'bold',
+                color:'blue',
+                fontSize: 14,
+                }}>
+            Forgot Password?
+            </Text>
+          </TouchableOpacity>
+          </View>
+          </View>
+
+           <View style={{backgroundColor:'white'}}>
+       <Button
+                title="Login"
+                buttonStyle={{
+                  marginTop:55, 
+                  marginHorizontal:25,
+                  borderRadius:10,  
+                  padding:6, 
+                  borderWidth: 1, 
+                  borderColor:'black', 
+                  backgroundColor:'#002bdcff',
+                  height:50
+                }}
+               titleStyle={{
+                fontSize: 18,
+                color: '#FFFFFF',
+                fontFamily: 'poppins-regular',
+                textAlign: 'center',
+            fontWeight:"bold"
+               }}
+              onPress={handlelogin}
+            
+              />
+     
+          </View>
+          
+          <View style={styles.orcontainer}>
                                 <View style={styles.line} />
                                   <View>
                                 <Text style={{width: 50, textAlign: 'center'}}>or</Text>
                                 </View>
                                 <View style={styles.line} />
-                                </View>
+                                </View> 
 
                                 <View style={styles.otherregistration}>
                                   <View style={styles.signin}>
@@ -231,25 +205,43 @@ repassword: yup.string().required('Password is required')
                                   </View>
                               
                                 </View>
-                              </Fragment>
-                      )}
-                      </Formik>
 
-</View>
-     
-            </View>
-  
-</View>
+                                <View style={{
+            backgroundColor:'#FFFFFF' ,
+            marginHorizontal:15,
+            flexDirection:'row', 
+            justifyContent:'center',
+            marginTop:55,
+             
+            
+            }}>
+          <View style={{backgroundColor:'#FFFFFF', marginBottom:30}}>
+          <Text style={{fontSize: 14, color:'black', marginRight:4}}>
+              Not Registered?
+          </Text>
+          </View>
+          <View style={{backgroundColor:'#FFFFFF'}}>
+          <TouchableOpacity>
+          <Text style={{  
+             fontWeight:'bold',
+                color:'blue',
+                fontSize: 14,
+                }}>
+        Create an account
+            </Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+        </View>
 
-</ScrollView>
-
+        </ScrollView>
   );
       }
               
 const styles=StyleSheet.create({
   container1:{
     alignItems:'center',
-  flex:1
+  height:800
   },
  
   container2:{
@@ -307,7 +299,7 @@ const styles=StyleSheet.create({
   },
 
   registercontainer:{
-    fontSize:38,
+    fontSize:50,
     color:"white", 
     fontWeight:'bold',
   },
@@ -319,10 +311,10 @@ fontSize:20,
   },
 
   container3:{
-marginTop:100,
+marginTop:130,
 justifyContent:"center",
 alignSelf:'flex-start',
-marginHorizontal:20, 
+marginHorizontal:25, 
 backgroundColor:'transparent',
 position:'absolute'
   },
@@ -338,7 +330,8 @@ position:'absolute'
     alignItems: 'center', 
     width:"80%", 
     justifyContent:"center", 
-    alignSelf:'center'
+    alignSelf:'center',
+    marginTop:20
   },
 
   otherregistration:{
