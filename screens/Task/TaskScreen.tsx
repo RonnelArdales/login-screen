@@ -20,7 +20,7 @@ export default function TaskScreen( ){
     const [donelist, setDonelist] = useState ([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [resultnotfound, setResultNotDFound] = useState(false);
-
+ 
     const retrieveData = async () => {
         setLoading(true)
         const addtask = await getData ('addtask');
@@ -126,6 +126,8 @@ export default function TaskScreen( ){
 return(
 
     <View style={{height: Dimensions.get('window').height, flex:1}}>
+
+       
     <View style={styles.container}>
         
         {tasklist?.length ?(
@@ -138,7 +140,8 @@ return(
     <ScrollView style={{marginTop:5}}>
 
     {tasklist?.map ((TASK:task, index: number ) => ( 
-      <ListItem key={index} bottomDivider 
+      <ListItem 
+      key={index} bottomDivider
       onPress={()  => {navigation.navigate("Taskdrawer", {
         screen: "EditTask",
         params: {task:TASK, index:index}
@@ -152,7 +155,7 @@ return(
         <ListItem.Subtitle>{TASK.Description}</ListItem.Subtitle>
         <ListItem.Subtitle>{TASK.Textinputdate} {TASK.Textinputtime}</ListItem.Subtitle>
       </ListItem.Content>
-      <Ionicons name = 'checkmark-circle-outline' size={30} color={"blue"} onPress={ () => {movetask(index)} }> </Ionicons>
+      <Ionicons name = 'checkmark-circle-outline' size={35} color={"gray"} onPress={ () => {movetask(index)} }> </Ionicons>
     </ListItem>  
     ))}
 </ScrollView>
@@ -187,7 +190,7 @@ return(
         <ListItem.Subtitle>{TASK.Description}</ListItem.Subtitle>
         <ListItem.Subtitle>Due {TASK.Textinputdate} {TASK.Textinputtime}</ListItem.Subtitle>
       </ListItem.Content>
-      <Ionicons name = 'checkmark-circle-outline' size={30} color={"red"} onPress={ () => {deletetask(index)} }> </Ionicons>
+      <Ionicons name = 'checkmark-circle-outline' size={35} color={"red"} onPress={ () => {deletetask(index)} }> </Ionicons>
     </ListItem>  
     ))}
 </ScrollView>

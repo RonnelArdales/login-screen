@@ -19,7 +19,7 @@ export default function HomeNavigator() {
           navigation.toggleDrawer();
         }}
         >
-<Ionicons name='menu' size={24} color={"black"}></Ionicons>
+<Ionicons name='menu' size={30} color={"black"}></Ionicons>
 
         </TouchableOpacity>
 
